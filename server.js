@@ -1,8 +1,13 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const saltRounds = 10
+const express = require('express');
+const bcrypt = require('bcrypt');
 const cors = require('cors');
 const knex = require('knex');
+const bodyParser = require('body-parser');
+
+const register = require('./Controllers/register');
+const signIn = require('./Controllers/signIn');
+const profile = require('./Controllers/profile');
+const image = require('./Controllers/image');
 
 const db = knex({
     client: 'pg',
@@ -14,84 +19,22 @@ const db = knex({
     }
 });
 
-const database = {
-    users: [{
-            id: "123",
-            name: "Harry",
-            email: "Harry@gmail.com",
-            password: "potter",
-            entries: 0,
-            joined: new Date()
-        },
-        {
-            id: "124",
-            name: "Hermione",
-            email: "Hermione@gmail.com",
-            password: "chocolate",
-            entries: 0,
-            joined: new Date()
-        }
-    ]
-};
-
 const app = express();
 
-app.use(express.json());
+app.use(express.json()); // parse JSON > obj
 app.use(cors());
+// Data URI : PayloadTooLargeError
+app.use(bodyParser.json({ limit: '10000kb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '10000kb', extended: true }));
 
-app.get("/", (req, res) => {
-    res.send("It is working!");
-});
-
-app.post("/signIn", (req, res) => {
-    bcrypt.compare('potter', hash).then(res => console.log('first guess', res));
-    bcrypt.compare('apple', hash).then(res => console.log('second guess', res));
-    if (
-        req.body.email === database.users[0].email &&
-        req.body.password === database.users[0].password
-    ) {
-        res.json(database.users[0]);
-    } else {
-        res.status(400).json("Error logging in");
-    }
-});
-
-app.post("/register", (req, res) => {
-    const { email, password, name } = req.body;
-    bcrypt.hash(password, saltRounds).then(hash => console.log(hash));
-    db('users')
-        .returning('*')
-        .insert({
-            email: email,
-            name: name,
-            joined: new Date()
-        })
-        .then(user => res.json(user[0]))
-        .catch(err => res.status(400).json('Unable to register'));
-});
-
-app.get("/profile/:id", (req, res) => {
-    const { id } = req.params;
-    db.select('*').from('users')
-        .where({ id: id }) // or {id}
-        .then(user => res.json(user[0]))
-});
-
-app.put("/image", (req, res) => {
-    const { id } = req.body;
-    let found = false;
-    database.users.forEach(user => {
-        if (user.id === Number(id)) {
-            found = true;
-            user.entries++;
-            res.json(user.entries);
-        }
-    });
-    if (!found) {
-        res.status(400).json("Not found");
-    }
-});
+app.get('/', (req, res) => res.send('It is working!'));
+app.post('/signIn', signIn.handleSignIn(db, bcrypt));
+app.post('/register', register.handleRegister(db, bcrypt));
+app.get('/profile/:id', profile.handleProfileGet(db));
+app.put('/image', image.handleImage(db));
+// image.handleImage(db)(req, res)  >  automatically pass (req, res)
+app.post('/imageUrl', (req, res) => image.handleApiCall(req, res));
 
 app.listen(3001, () => {
-    console.log("App is running on port 3001");
+    console.log('App is running on port 3001');
 });
