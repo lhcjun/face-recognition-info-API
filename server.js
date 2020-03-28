@@ -12,11 +12,17 @@ const image = require('./Controllers/image');
 const db = knex({
     client: 'pg',
     connection: {
-        host: '127.0.0.1',
-        user: 'postgres',
-        password: 'txduik',
-        database: 'facedetect'
+        connectionString: process.env.DATABASE_URL,
+        ssl: true
     }
+
+    // local
+    // connection:{
+    //     host: '127.0.0.1',
+    //     user: 'database_user',
+    //     password: 'database_password',
+    //     database: 'database_name'
+    // }
 });
 
 const app = express();
