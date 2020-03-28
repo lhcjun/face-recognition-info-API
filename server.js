@@ -42,6 +42,14 @@ app.use((req, res, next) => {
     }
     next();
 })
+
+app.use(cors({
+    origin: [
+        'https://facial-detective.herokuapp.com',
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 // Data URI : PayloadTooLargeError
 app.use(bodyParser.json({ limit: '10000kb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '10000kb', extended: true }));
