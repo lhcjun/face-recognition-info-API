@@ -6,6 +6,8 @@ const app = new Clarifai.App({
 
 const handleApiCall = (req, res) => {
     const { inputLink, inputMethod } = req.body;
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', '*');
     // Data URI: data:image/jpeg;base64,<data>    <data> start from 23 (begin 0)
     let handleInputFile = inputLink.split('').slice(23).join('');
     app.models
