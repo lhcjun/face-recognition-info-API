@@ -30,8 +30,8 @@ const app = express();
 app.use(express.json()); // parse JSON > obj
 app.use(cors());
 // Data URI : PayloadTooLargeError
-app.use(bodyParser.json({ limit: '10000kb', extended: true }));
-app.use(bodyParser.urlencoded({ limit: '10000kb', extended: true }));
+app.use(bodyParser.json({ limit: '1000000kb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '1000000kb', extended: true }));
 
 app.get('/', (req, res) => res.send('It is working!'));
 app.post('/signIn', signIn.handleSignIn(db, bcrypt));
