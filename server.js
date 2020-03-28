@@ -28,7 +28,13 @@ const db = knex({
 const app = express();
 
 app.use(express.json()); // parse JSON > obj
-app.use(cors({ credentials: true, origin: true }));
+app.use(cors());
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    next();
+})
 // Data URI : PayloadTooLargeError
 app.use(bodyParser.json({ limit: '10000kb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '10000kb', extended: true }));
