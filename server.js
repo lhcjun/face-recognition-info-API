@@ -29,12 +29,14 @@ const app = express();
 
 app.use(express.json()); // parse JSON > obj
 app.use(cors());
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    next();
-})
+app.options('*', (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.send('ok');
+});
+
+app.use((req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+});
 // Data URI : PayloadTooLargeError
 app.use(bodyParser.json({ limit: '10000kb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '10000kb', extended: true }));
