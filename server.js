@@ -31,11 +31,17 @@ app.use(express.json()); // parse JSON > obj
 app.use(cors());
 // CORS
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header('Access-Control-Allow-Methods', 'DELETE, PUT, GET, POST');
-    res.header("Access-Control-Allow-Headers", "Origin, application/json, Content-Type, Accept");
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+        return res.status(200).json({});
+    }
     next();
-});
+})
 // Data URI : PayloadTooLargeError
 app.use(bodyParser.json({ limit: '10000kb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '10000kb', extended: true }));
