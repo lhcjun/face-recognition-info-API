@@ -10,19 +10,19 @@ const profile = require("./Controllers/profile");
 const image = require("./Controllers/image");
 
 const db = knex({
-  client: "pg",
-  connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: true
-  }
+    client: "pg",
+    connection: {
+        connectionString: process.env.DATABASE_URL,
+        ssl: true
+    }
 
-  // local
-  // connection:{
-  //     host: '127.0.0.1',
-  //     user: 'database_user',
-  //     password: 'database_password',
-  //     database: 'database_name'
-  // }
+    // local
+    // connection:{
+    //     host: '127.0.0.1',
+    //     user: 'database_user',
+    //     password: 'database_password',
+    //     database: 'database_name'
+    // }
 });
 
 const app = express();
@@ -30,20 +30,20 @@ const app = express();
 app.use(express.json()); // parse JSON > obj
 app.use(cors());
 // Data URI : PayloadTooLargeError
-app.use(bodyParser.json({ limit: "1000000kb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "1000000kb", extended: true }));
+app.use(bodyParser.json({ limit: "100000000kb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "100000000kb", extended: true }));
 // CORS
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-    return res.status(200).json({});
-  }
-  next();
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    if (req.method === "OPTIONS") {
+        res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+        return res.status(200).json({});
+    }
+    next();
 });
 
 app.get("/", (req, res) => res.send("It is working!"));
@@ -55,5 +55,5 @@ app.put("/image", image.handleImage(db));
 app.post("/imageUrl", (req, res) => image.handleApiCall(req, res));
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log(`App is running on port ${process.env.PORT}`);
+    console.log(`App is running on port ${process.env.PORT}`);
 });
