@@ -30,8 +30,8 @@ const app = express();
 app.use(express.json()); // parse JSON > obj
 app.use(cors());
 // Data URI : PayloadTooLargeError
-app.use(bodyParser.json({ limit: "100000000kb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "100000000kb", extended: true }));
+app.use(bodyParser.json({ limit: "10000000000kb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "10000000000kb", extended: true }));
 // CORS
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
