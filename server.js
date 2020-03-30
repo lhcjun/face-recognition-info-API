@@ -34,13 +34,13 @@ app.use(bodyParser.json({ limit: "10000kb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "10000kb", extended: true }));
 // CORS
 const corsOptions = {
-    origin: 'https://facial-detective.herokuapp.com/',
+    origin: '*',
     methods: 'GET, POST, PUT',
-    credentials: true,
+    credentials: false,
     allowedHeaders: 'Content-Type,Authorization',
     exposedHeaders: 'Content-Range,X-Content-Range'
 };
-app.options('https://facial-detective.herokuapp.com/', cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.get("/", (req, res) => res.send("It is working!"));
 app.post("/signIn", signIn.handleSignIn(db, bcrypt));
