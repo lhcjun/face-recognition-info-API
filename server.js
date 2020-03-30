@@ -34,7 +34,7 @@ app.use(bodyParser.json({ limit: "10000kb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "10000kb", extended: true }));
 // CORS
 const corsOptions = {
-    origin: '*',
+    origin: 'https://facial-detective.herokuapp.com/',
     methods: 'GET, POST, PUT',
     credentials: true,
     allowedHeaders: 'Content-Type,Authorization',
