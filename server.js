@@ -32,6 +32,15 @@ app.use(cors());
 // Data URI : PayloadTooLargeError
 app.use(bodyParser.json({ limit: "10000kb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "10000kb", extended: true }));
+// CORS
+const corsOptions = {
+    origin: '*',
+    methods: 'GET, POST, PUT',
+    credentials: true,
+    allowedHeaders: 'Content-Type,Authorization',
+    exposedHeaders: 'Content-Range,X-Content-Range'
+};
+app.options('*', cors(corsOptions));
 
 app.get("/", (req, res) => res.send("It is working!"));
 app.post("/signIn", signIn.handleSignIn(db, bcrypt));
