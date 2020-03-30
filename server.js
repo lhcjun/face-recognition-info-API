@@ -40,7 +40,7 @@ const corsOptions = {
     allowedHeaders: 'Content-Type,Authorization',
     exposedHeaders: 'Content-Range,X-Content-Range'
 };
-app.options('*', cors(corsOptions));
+app.options('https://facial-detective.herokuapp.com/', cors(corsOptions));
 
 app.get("/", (req, res) => res.send("It is working!"));
 app.post("/signIn", signIn.handleSignIn(db, bcrypt));
