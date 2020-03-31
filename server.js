@@ -37,10 +37,10 @@ const corsOptions = {
     origin: 'https://facial-detective.herokuapp.com/',
     methods: 'GET, POST, PUT',
     credentials: true,
-    allowedHeaders: 'Content-Type', // ,Authorization
+    allowedHeaders: 'Content-Type,Authorization',
     exposedHeaders: 'Content-Range,X-Content-Range'
 };
-app.options('https://facial-detective.herokuapp.com/', cors(corsOptions));
+app.options('/imageUrl', cors(corsOptions));
 
 app.get("/", (req, res) => res.send("It is working!"));
 app.post("/signIn", signIn.handleSignIn(db, bcrypt));
