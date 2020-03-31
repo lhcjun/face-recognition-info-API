@@ -1,16 +1,16 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const cors = require("cors");
-const knex = require("knex");
-const bodyParser = require("body-parser");
+const express = require('express');
+const bcrypt = require('bcrypt');
+const cors = require('cors');
+const knex = require('knex');
+const bodyParser = require('body-parser');
 
-const register = require("./Controllers/register");
-const signIn = require("./Controllers/signIn");
-const profile = require("./Controllers/profile");
-const image = require("./Controllers/image");
+const register = require('./Controllers/register');
+const signIn = require('./Controllers/signIn');
+const profile = require('./Controllers/profile');
+const image = require('./Controllers/image');
 
 const db = knex({
-    client: "pg",
+    client: 'pg',
     connection: {
         connectionString: process.env.DATABASE_URL,
         ssl: true
@@ -30,27 +30,27 @@ const app = express();
 
 app.use(cors());
 // Data URI : PayloadTooLargeError
-app.use(bodyParser.json({ limit: "10000kb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "10000kb", extended: true }));
+app.use(bodyParser.json({ limit: '10000kb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '10000kb', extended: true }));
 // parse JSON > obj
-app.use(express.json()); // must place AFTER bodyParser, or 413 error
+app.use(express.json()); // must place AFTER bodyParser, or 413 error！
 // CORS
-const corsOptions = {
-    origin: 'https://facial-detective.herokuapp.com/',
-    methods: 'GET, POST, PUT',
-    credentials: true,
-    allowedHeaders: 'Content-Type,Authorization',
-    exposedHeaders: 'Content-Range,X-Content- Range'
-};
-app.options('/imageUrl', cors(corsOptions));
+// const corsOptions = {
+//     origin: 'https://facial-detective.herokuapp.com/',
+//     methods: 'GET, POST, PUT',
+//     credentials: true,
+//     allowedHeaders: 'Content-Type,Authorization',
+//     exposedHeaders: 'Content-Range,X-Content- Range'
+// };
+// app.options('/imageUrl', cors(corsOptions));
 
-app.get("/", (req, res) => res.send("It is working!"));
-app.post("/signIn", signIn.handleSignIn(db, bcrypt));
-app.post("/register", register.handleRegister(db, bcrypt));
-app.get("/profile/:id", profile.handleProfileGet(db));
-app.put("/image", image.handleImage(db));
+app.get('/', (req, res) => res.send('It is working!'));
+app.post('/signIn', signIn.handleSignIn(db, bcrypt));
+app.post('/register', register.handleRegister(db, bcrypt));
+app.get('/profile/:id', profile.handleProfileGet(db));
+app.put('/image', image.handleImage(db));
 // image.handleImage(db)(req, res)  >  automatically pass (req, res)
-app.post("/imageUrl", (req, res) => image.handleApiCall(req, res));
+app.post('/imageUrl', (req, res) => image.handleApiCall(req, res));
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`App is running on port ${process.env.PORT}`);
