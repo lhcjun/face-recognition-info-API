@@ -27,18 +27,20 @@ const db = knex({
 
 const app = express();
 
-app.use(express.json()); // parse JSON > obj
+
 app.use(cors());
 // Data URI : PayloadTooLargeError
 app.use(bodyParser.json({ limit: "10000kb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "10000kb", extended: true }));
+
+app.use(express.json()); // parse JSON > obj
 // CORS
 const corsOptions = {
     origin: 'https://facial-detective.herokuapp.com/',
     methods: 'GET, POST, PUT',
     credentials: true,
     allowedHeaders: 'Content-Type,Authorization',
-    exposedHeaders: 'Content-Range,X-Content-Range'
+    exposedHeaders: 'Content-Range,X-Content- Range'
 };
 app.options('/imageUrl', cors(corsOptions));
 
