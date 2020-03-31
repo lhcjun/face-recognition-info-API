@@ -40,7 +40,7 @@ const corsOptions = {
     allowedHeaders: 'Content-Type,Authorization',
     exposedHeaders: 'Content-Range,X-Content-Range'
 };
-app.options('/imageUrl', cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.get("/", (req, res) => res.send("It is working!"));
 app.post("/signIn", signIn.handleSignIn(db, bcrypt));

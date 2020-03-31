@@ -10,8 +10,8 @@ const handleApiCall = (req, res) => {
     let handleInputFile = inputLink.split('').slice(23).join('');
     app.models
         .predict(
-            Clarifai.DEMOGRAPHICS_MODEL,
-            inputMethod === 'search' ? inputLink : handleInputFile
+            const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; Clarifai.DEMOGRAPHICS_MODEL,
+            inputMethod === 'search' ? inputLink : proxyUrl + handleInputFile
         )
         .then(apiData => res.json(apiData))
         .catch(err => res.status(400).json('Unable to work with API'))
