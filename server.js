@@ -35,14 +35,14 @@ app.use(bodyParser.urlencoded({ limit: "10000kb", extended: true }));
 // parse JSON > obj
 app.use(express.json()); // must place AFTER bodyParser, or 413 error
 // CORS
-// const corsOptions = {
-//     origin: 'https://facial-detective.herokuapp.com/',
-//     methods: 'GET, POST, PUT',
-//     credentials: true,
-//     allowedHeaders: 'Content-Type,Authorization',
-//     exposedHeaders: 'Content-Range,X-Content- Range'
-// };
-// app.options('/imageUrl', cors(corsOptions));
+const corsOptions = {
+    origin: 'https://facial-detective.herokuapp.com/',
+    methods: 'GET, POST, PUT',
+    credentials: true,
+    allowedHeaders: 'Content-Type,Authorization',
+    exposedHeaders: 'Content-Range,X-Content- Range'
+};
+app.options('/imageUrl', cors(corsOptions));
 
 app.get("/", (req, res) => res.send("It is working!"));
 app.post("/signIn", signIn.handleSignIn(db, bcrypt));
