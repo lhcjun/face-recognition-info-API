@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  # Backend API
+  face-recognition-api:
+    container_name: backend
+    # image: node:13.7.0            # build container with docker hub image
+    build: ./ # Build container with Dockerfile
+    command: npm start
+    working_dir: /usr/src/face-recognition
+    environment:
+      POSTGRES_URI: postgres://jl:secret@postgres:5432/face-recognition-docker
+    ports:
+      - "3001:3001"
+    volumes: # mounting the changes on local file to docker container
+      - ./:/usr/src/face-recognition
+      - /usr/src/face-recognition/node_modules/ # for ELF error
+  # PostgreSQL
+  postgres:
+    build: ./postgres
+    environment:
+      POSTGRES_USER: jl
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: face-recognition-docker
+      POSTGRES_HOST: postgres
+    ports:
+      - "5430:5432"
