@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const cors = require('cors');
 const knex = require('knex');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 
 const register = require('./Controllers/register');
 const signIn = require('./Controllers/signIn');
@@ -11,12 +12,16 @@ const image = require('./Controllers/image');
 
 const db = knex({
     client: 'pg',
-    connection: {
-        connectionString: process.env.DATABASE_URL,
-        ssl: true
-    }
+    // production (heroku)
+    // connection: {
+    //     connectionString: process.env.DATABASE_URL,
+    //     ssl: true
+    // }
 
-    // local
+    // development - docker
+    connection: process.env.POSTGRES_URI
+
+    // development - non docker
     // connection:{
     //     host: '127.0.0.1',
     //     user: 'database_user',
@@ -27,7 +32,7 @@ const db = knex({
 
 const app = express();
 
-
+app.use(morgan('combined')); // HTTP req logger   
 app.use(cors());
 // Data URI : PayloadTooLargeError
 app.use(bodyParser.json({ limit: '10000kb', extended: true }));
@@ -52,6 +57,7 @@ app.put('/image', image.handleImage(db));
 // image.handleImage(db)(req, res)  >  automatically pass (req, res)
 app.post('/imageUrl', (req, res) => image.handleApiCall(req, res));
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`App is running on port ${process.env.PORT}`);
+const port = process.env.PORT || 3001;
+app.listen(port, () => {
+    console.log(`App is running on port ${port}`);
 });
