@@ -1,4 +1,5 @@
 # face-recognition-info-API
+frontend: [face-recognition-info](https://github.com/lhcjun/face-recognition-info)
 
 ### Docker 
 ---
@@ -9,7 +10,7 @@
     ```
     docker-compose up --build
     
-    docker-compose up            // if not first time setting up
+    docker-compose up            // if already finished build phase
     ```
 5. Add Clarifai API key in the controllers/image.js file
     

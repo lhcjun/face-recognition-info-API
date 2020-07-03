@@ -5,8 +5,9 @@ const app = new Clarifai.App({
     // apiKey: process.env.API_CLARIFAI
 
     // development
-    apiKey: "YOUR_API_KEY"
+    apiKey: "YOUR_CLARIFAI_API_KEY"
 });
+
 
 const handleApiCall = (req, res) => {
     const { inputLink, inputMethod } = req.body;

@@ -10,6 +10,7 @@ services:
     working_dir: /usr/src/face-recognition
     environment:
       POSTGRES_URI: postgres://jl:secret@postgres:5432/face-recognition-docker
+      REDIS_URI: redis://redis:6379
     ports:
       - "3001:3001"
     volumes: # mounting the changes on local file to docker container
@@ -25,3 +26,8 @@ services:
       POSTGRES_HOST: postgres
     ports:
       - "5430:5432"
+  # Redis
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"

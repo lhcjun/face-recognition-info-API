@@ -9,6 +9,7 @@ const register = require('./Controllers/register');
 const signIn = require('./Controllers/signIn');
 const profile = require('./Controllers/profile');
 const image = require('./Controllers/image');
+const auth = require('./middleware/authorization');
 
 const db = knex({
     client: 'pg',
@@ -50,12 +51,13 @@ app.use(express.json()); // must place AFTER bodyParser, or 413 error！
 // app.options('/imageUrl', cors(corsOptions));
 
 app.get('/', (req, res) => res.send('It is working!'));
-app.post('/signIn', signIn.handleSignIn(db, bcrypt));
+app.post('/signIn', signIn.signInAuthentication(db, bcrypt));
 app.post('/register', register.handleRegister(db, bcrypt));
-app.get('/profile/:id', profile.handleProfileGet(db));
-app.put('/image', image.handleImage(db));
+app.get('/profile/:id', auth.requireAuth, profile.handleProfileGet(db));
+app.post('/profile/:id', auth.requireAuth, profile.handleProfileUpdate(db));
+app.put('/image', auth.requireAuth, image.handleImage(db));
 // image.handleImage(db)(req, res)  >  automatically pass (req, res)
-app.post('/imageUrl', (req, res) => image.handleApiCall(req, res));
+app.post('/imageUrl', auth.requireAuth, (req, res) => image.handleApiCall(req, res));
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
