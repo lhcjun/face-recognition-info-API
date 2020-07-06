@@ -5,7 +5,7 @@ const app = new Clarifai.App({
     // apiKey: process.env.API_CLARIFAI
 
     // development
-    apiKey: "a3da059c0de242bab6f0d73659a1ba17"
+    apiKey: "YOUR_CLARIFAI_API_KEY"
 });
 
 
