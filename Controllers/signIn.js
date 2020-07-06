@@ -56,7 +56,7 @@ const createSessions = user => {
   // set token into Redis
   return setToken(token, id)
     .then(() => {
-      return { success: 'true', userId: id, token }
+      return { success: 'true', userId: id, token, user }
     })
     .catch(console.log)
 };
