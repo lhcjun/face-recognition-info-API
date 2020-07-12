@@ -13,14 +13,15 @@ const auth = require('./middleware/authorization');
 
 const db = knex({
     client: 'pg',
-    // production (heroku)
-    // connection: {
-    //     connectionString: process.env.DATABASE_URL,
-    //     ssl: true
-    // }
+
+    // production (heroku) - non docker
+    connection: {
+        connectionString: process.env.DATABASE_URL,
+        ssl: true
+    }
 
     // development - docker
-    connection: process.env.POSTGRES_URI
+    // connection: process.env.POSTGRES_URI
 
     // development - non docker
     // connection:{
